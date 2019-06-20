@@ -17,7 +17,10 @@ namespace HashTree.Classes
             CanAdd = new Queue<int>();
             Size = 0;
         }
-
+        /// <summary>
+        /// Adds a uniquely valued node to the binary tree.
+        /// </summary>
+        /// <param name="value">int value</param>
         public void Add(int value)
         {
             if (Storage.ContainsKey(value)) return;
@@ -132,7 +135,13 @@ namespace HashTree.Classes
 
         public void AddToAvaliableNode(Node badNode, Node addNode)
         {
-            
+            HashSet<int> badAdds = FindNullChildren(badNode);
+            Queue<int> temp = new Queue<int>();
+
+            while(badAdds.Contains(CanAdd.Peek()))
+            {
+                //TODO:
+            }
         }
 
         public void DeleteFromQueue(int value)
