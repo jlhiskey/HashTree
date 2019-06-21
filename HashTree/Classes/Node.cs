@@ -6,7 +6,7 @@ namespace HashTree.Classes
 {
     public class Node
     {
-        public Node Parent { get; set; }
+        public int Parent { get; set; }
         public int Value { get; set; }
 
         public Node Left { get; set; }
@@ -17,7 +17,6 @@ namespace HashTree.Classes
             Value = value;
             Left = null;
             Right = null;
-            Parent = null;
         }
 
         

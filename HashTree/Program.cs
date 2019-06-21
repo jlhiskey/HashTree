@@ -8,13 +8,14 @@ namespace HashTree
         static void Main(string[] args)
         {
             Hashtree test = new Hashtree();
-            test.Add(1);
-            test.Add(2);
-            test.Add(3);
-            test.Add(4);
-            test.Add(5);
-            test.Add(6);
-            test.Add(7);           
+
+            for (int i = 1; i <= 2147483647; i++)
+            {
+                test.Add(i);
+                
+            }
+
+            
         }
     }
 }
