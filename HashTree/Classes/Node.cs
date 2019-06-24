@@ -7,16 +7,20 @@ namespace HashTree.Classes
     public class Node
     {
         public int Parent { get; set; }
-        public int Value { get; set; }
+        public int Key { get; set; }
 
-        public Node Left { get; set; }
-        public Node Right { get; set; }
+        public Object Value { get; set; }
 
-        public Node(int value)
+        public int Left { get; set; }
+        public int Right { get; set; }
+
+        public Node(int counter, int value)
         {
+            Key = counter;
             Value = value;
-            Left = null;
-            Right = null;
+            Left = 0;
+            Right = 0;
+            Parent = 0;
         }
 
         
