@@ -6,53 +6,87 @@ namespace HashTree.Classes
 {
     public class Hashtree
     {
+        /// <summary>
+        /// Total nodes within Hashtree
+        /// </summary>
         public int Size { get; set; }
-        public int Counter { get; set; }
-        Dictionary<int, Node> Storage { get; set; } 
+        /// <summary>
+        /// Keeps track of the next avaliable key value for new nodes being added to tree.
+        /// </summary>
+        private int NextKeyValue { get; set; }
+        /// <summary>
+        /// Keeps track of nodes and allows for O(1) lookup of nodes position in the tree.
+        /// </summary>
+        private Dictionary<int, Node> Storage { get; set; } 
+        /// <summary>
+        /// Stores key values of nodes that have avaliable children for new nodes.
+        /// </summary>
         Queue<int> CanAdd { get; set; }
-        int Root { get; set; }
+        /// <summary>
+        /// Keeps track of the root of the tree.
+        /// </summary>
+        public int Root { get; set; }
 
+        /// <summary>
+        /// Creates a new Hashtree that will have an empty Storage, an empty CanAdd queue, an initial Size of 0, and NextKeyValue that is initially set to 1 and will be used as the Key value for newly added nodes.
+        /// </summary>
         public Hashtree()
         {
             Storage = new Dictionary<int, Node>();
             CanAdd = new Queue<int>();
             Size = 0;
-            Counter = 1;
+            NextKeyValue = 1;
         }
         /// <summary>
-        /// Adds a uniquely valued node to the binary tree.
+        /// Adds a node to the binary tree with a generic value as input.
         /// </summary>
-        /// <param name="value">int value</param>
+        /// <param name="value">object value</param>
         public void Add(int value)
         {          
-            
-            Node temp = new Node(Counter, value);
+            // Creates a temp node using Counter as the nodes key and user input value as the node's value.
+            Node temp = new Node(NextKeyValue, value);
+
+            // Handles an empty tree.
             if (Root == 0)
             {
                 Root = temp.Key;
                 CanAdd.Enqueue(temp.Key);
-                Storage.Add(Counter, temp);
+                Storage.Add(NextKeyValue, temp);
             }
+            // Calls the add helper method with the temp node as input.
             else
             {
                 AddHelper(temp);
             }
+            // Increases the Size of the Hashtree
             Size = Size + 1;
-            Counter = Counter + 1;
+            // Increases the Counter of the Hashtree 
+            NextKeyValue = NextKeyValue + 1;
         }
 
-        public void AddHelper(Node temp)
+        /// <summary>
+        /// Accepts a node as input and inserts that node into the first avaliable nodes first avaliable child using left child as priority for insert.
+        /// </summary>
+        /// <param name="temp">Incoming node that will be inserted into tree.</param>
+        private void AddHelper(Node temp)
         {
+            // Creates a landing point for the TryGetValue from storage.
             Node current;
+            // Grabs the first avaliable node from the CanAdd queue. 
             Storage.TryGetValue(CanAdd.Peek(), out current);
+            // Checks to see if there is storage avaliable in the current nodes left child.
             if (current.Left == 0)
             {
+                // Sets the current nodes left value to the incoming nodes key value.
                 current.Left = temp.Key;
+                // Sets the incoming nodes parent value to current.
                 temp.Parent = current.Key;
+                // Adds the incoming node to storage.
                 Storage.Add(temp.Key, temp);
-              
+                // Adds the incoming node to the CanAdd queue.
                 CanAdd.Enqueue(temp.Key);
             }
+            // Adds temp node to current nodes right child.
             else
             {
                 current.Right = temp.Key;
@@ -61,6 +95,7 @@ namespace HashTree.Classes
                 
                 CanAdd.Enqueue(temp.Key);
             }
+            // Checks to see if there is any storage space left in the node and dequeues if the nodes children are both occupied.
             if (current.Left != 0 && current.Right != 0)
             {
                 CanAdd.Dequeue();
@@ -71,20 +106,28 @@ namespace HashTree.Classes
         {
             if (!Storage.ContainsKey(value)) return;
 
-            Node current;
+            Node current = null;
             Storage.TryGetValue(value, out current);
 
-            Node parent; 
+            Node parent = null;
             Storage.TryGetValue(current.Parent, out parent);
+
+            if (parent == null) return;
 
             if (current.Left != 0 && current.Right == 0 && parent.Left == current.Key)
             {
-                    parent.Left = current.Left;
+                Node left;
+                Storage.TryGetValue(current.Left, out left);
+                parent.Left = left.Key;
+                left.Parent = parent.Key;
             }
 
             if (current.Left == 0 && current.Right != 0 && parent.Right == current.Key)
             {
-                parent.Right = current.Right;
+                Node right;
+                Storage.TryGetValue(current.Left, out right);
+                parent.Right = right.Key;
+                right.Parent = parent.Key;
             }
 
             if (CanAdd.Contains(value))
@@ -95,19 +138,22 @@ namespace HashTree.Classes
             if (current.Left != 0 && current.Right != 0 && parent.Left == current.Key)
             {
                 parent.Left = current.Left;
+                current.Parent = parent.Key;
 
-                Storage.Remove(current.Right);
+                
                 Node right;
                 Storage.TryGetValue(current.Right, out right);
+                Storage.Remove(current.Right);
                 AddToAvaliableNode(current, right);
             }
 
             if (current.Left != 0 && current.Right != 0 && parent.Right == current.Key)
             {
                 parent.Right = current.Right;
-                Storage.Remove(current.Left);
+                
                 Node left;
                 Storage.TryGetValue(current.Left, out left);
+                Storage.Remove(current.Left);
                 AddToAvaliableNode(current, left);
             }
             Size--;
