@@ -37,6 +37,10 @@ namespace HashTree.Classes
             Size = 0;
             NextKeyValue = 1;
         }
+
+
+        //------ Add method and Add Related Methods ------------------------------------------------------------------------------------------
+
         /// <summary>
         /// Adds a node to the binary tree with a generic value as input.
         /// </summary>
@@ -89,9 +93,7 @@ namespace HashTree.Classes
                 {
                     Storage.Add(temp.Key, temp);
                 }
-                // Adds the incoming node to the CanAdd queue.
                 
-
             }
             // Adds temp node to current nodes right child.
             else
@@ -112,19 +114,25 @@ namespace HashTree.Classes
             }
         }
 
-        public void Remove(int value)
+        //------ Remove Method and Remove Related Methods ------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Removes a node from the tree and restuctures the tree to fill in void space.
+        /// </summary>
+        /// <param name="keyValue">References the node that will be removed</param>
+        public void Remove(int keyValue)
         {
-            if (!Storage.ContainsKey(value)) return;
+            if (!Storage.ContainsKey(keyValue)) return;
                     
             Node current = null;
             
-            Storage.TryGetValue(value, out current);
+            Storage.TryGetValue(keyValue, out current);
 
             if (current.Parent == 0) return;
 
-            Storage.Remove(value);
+            Storage.Remove(keyValue);
 
-            DeleteFromQueue(value);
+            DeleteFromQueue(keyValue);
 
             Node parent = null;
 
@@ -156,7 +164,7 @@ namespace HashTree.Classes
 
             if (left != null && right == null)
             {
-                if (parent.Left == value)
+                if (parent.Left == keyValue)
                 {
                     parent.Left = left.Key;
                 }
@@ -169,7 +177,7 @@ namespace HashTree.Classes
 
             if (left == null && right != null)
             {
-                if (parent.Left == value)
+                if (parent.Left == keyValue)
                 {
                     parent.Left = right.Key;
                 }
@@ -202,13 +210,18 @@ namespace HashTree.Classes
             Size--;
         }
 
-        private HashSet<int> FindNullChildren(int root)
+        /// <summary>
+        /// Private method that is used by AddAvaliableNodes method to determine which nodes to not add a new node to using a breadth first traversal.
+        /// </summary>
+        /// <param name="nodeKeyValue">Represents the node key value that will be used for the start of the traversal.</param>
+        /// <returns>A hashSet of values that represent nodes that shouldnt be used to add a new node to.</returns>
+        private HashSet<int> FindNullChildren(int nodeKeyValue)
         {
             HashSet<int> nullChildren = new HashSet<int>();
 
             Queue<int> queue = new Queue<int>();
 
-            queue.Enqueue(root);
+            queue.Enqueue(nodeKeyValue);
 
             while (queue.Count > 0)
             {
@@ -235,11 +248,15 @@ namespace HashTree.Classes
             return nullChildren;
         }
 
-        private void AddToAvaliableNode(int node)
+        /// <summary>
+        /// Retreives a list of badNodes that shouldn't be used when adding a new node using the FindNullChildren method. Then reprioritized the CanAddQueue to filter out all of the nodes that shouldnt be used to add a node then add the incoming node to the tree using the AddHelper method.
+        /// </summary>
+        /// <param name="nodeKeyValue">Represents the node that will be added to the tree.</param>
+        private void AddToAvaliableNode(int nodeKeyValue)
         {
             Node temp;
-            Storage.TryGetValue(node, out temp);
-            HashSet<int> badAdds = FindNullChildren(node);
+            Storage.TryGetValue(nodeKeyValue, out temp);
+            HashSet<int> badAdds = FindNullChildren(nodeKeyValue);
             
             int currentNode = CanAdd.Peek();
 
@@ -275,9 +292,13 @@ namespace HashTree.Classes
             AddHelper(temp, false);
         }
 
-        private void DeleteFromQueue(int value)
+        /// <summary>
+        /// Removes a value from 
+        /// </summary>
+        /// <param name="nodeKeyValue"></param>
+        private void DeleteFromQueue(int nodeKeyValue)
         {
-            if (!CanAdd.Contains(value)) return;
+            if (!CanAdd.Contains(nodeKeyValue)) return;
 
             Queue<int> temp = new Queue<int>();
 
@@ -285,7 +306,7 @@ namespace HashTree.Classes
             {
                 int current = CanAdd.Dequeue();
 
-                if (current != value)
+                if (current != nodeKeyValue)
                 {
                     temp.Enqueue(current);
                 }
@@ -297,24 +318,26 @@ namespace HashTree.Classes
             }
         }
 
-        private void AddToQueue(int value, bool isNewNode)
+        //------ Shared Methods -----------------------------------------------------------------------------------------------------
+
+        private void AddToQueue(int nodeKeyValue, bool isNewNode)
         {
             if (isNewNode)
             {
-                CanAdd.Enqueue(value);
+                CanAdd.Enqueue(nodeKeyValue);
                 return;
             }
 
             Node current = null;
-            Storage.TryGetValue(value, out current);
+            Storage.TryGetValue(nodeKeyValue, out current);
 
 
 
-            if (!CanAdd.Contains(value))
+            if (!CanAdd.Contains(nodeKeyValue))
             {
                 if (current.Left == 0 || current.Right == 0)
                 {
-                    CanAdd.Enqueue(value);
+                    CanAdd.Enqueue(nodeKeyValue);
                 }
             }
         }
