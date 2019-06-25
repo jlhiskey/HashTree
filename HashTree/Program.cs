@@ -12,7 +12,7 @@ namespace HashTree
             
             Hashtree test = new Hashtree();
 
-            int numNodes = 3;
+            int numNodes = 20000;
 
             stopwatch.Start();
             for (int i = 1; i <= numNodes; i++)
@@ -21,15 +21,15 @@ namespace HashTree
                 
             }
             stopwatch.Stop();
-            Console.WriteLine(stopwatch.Elapsed);
-
-            test.Remove(2);
-
-            //for (int i = numNodes; i > 1; i --)
-            //{
-            //    test.Remove(i);
-
-            //}
+            Console.WriteLine($"Add Complete +{stopwatch.Elapsed}");
+            stopwatch.Reset();
+            stopwatch.Start();
+            for (int i = numNodes; i > 1; i--)
+            {
+                test.Remove(i);
+            }
+            stopwatch.Stop();
+            Console.WriteLine($"Remove Complete +{stopwatch.Elapsed}");        
         }
     }
 }
