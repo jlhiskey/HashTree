@@ -45,15 +45,10 @@ namespace HashtreeProjectTestSuite
 
             Assert.Equal(0, hashtree.Size);
         }
-        //Test Storage
-        //Test CanAdd
         //Test Root
-        //Test Add
-        //Test Add Helper
+        //Test Add       
         //Test Remove
-        //Test FindNullChildren
-        //Test AddToAvaliableNode
-        //Test DeleteFromQueue
-        //
+        //Test Update
+        //Test Read
     }
 }

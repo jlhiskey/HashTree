@@ -12,7 +12,7 @@ namespace HashTree
             
             Hashtree test = new Hashtree();
 
-            int numNodes = 20000;
+            int numNodes = 100000;
 
             stopwatch.Start();
             for (int i = 1; i <= numNodes; i++)
