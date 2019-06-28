@@ -388,6 +388,32 @@ namespace HashTree.Classes
             }
         }
 
+        //----- Print All Values------------------------------------------------------------------------------
+        public List<object> PrintAll()
+        {
+            List<object> allValues = new List<object>();
+            int current = Root;
+            Queue<int> queue = new Queue<int>();
+            queue.Enqueue(current);
+            while (queue.Count > 0)
+            {
+                current = queue.Dequeue();
+                Node currentNode;
+                Storage.TryGetValue(current, out currentNode);
+                allValues.Add(currentNode.Value);
+                if (currentNode.Left != 0)
+                {
+                    queue.Enqueue(currentNode.Left);
+                }
+                if (currentNode.Right != 0)
+                {
+                    queue.Enqueue(currentNode.Right);
+                }
+            }
+
+            return allValues;
+        }
+
         //------ Shared Methods -----------------------------------------------------------------------------------------------------
         // Adds a value to the CanAdd queue.
         private void AddToQueue(int nodeKeyValue, bool isNewNode)
