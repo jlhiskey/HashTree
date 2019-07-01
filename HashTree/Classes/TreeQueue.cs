@@ -36,5 +36,10 @@ namespace HashTree.Classes
 
             return keyValue;
         }
+        
+        public void Remove(int keyValue)
+        {
+            Storage.Remove(keyValue);
+        }
     }
 }
