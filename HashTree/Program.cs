@@ -36,7 +36,7 @@ namespace HashTree
 
             test.Remove(4);
             stopwatch.Stop();
-            result = test.PrintAll();
+            result = test.ReadAll();
             Console.WriteLine($"Remove Complete +{stopwatch.Elapsed}");        
         }
     }

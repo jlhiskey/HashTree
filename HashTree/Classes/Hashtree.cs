@@ -388,8 +388,12 @@ namespace HashTree.Classes
             }
         }
 
-        //----- Print All Values------------------------------------------------------------------------------
-        public List<object> PrintAll()
+        //----- Read All Values------------------------------------------------------------------------------
+        /// <summary>
+        /// ReadAll returns all values in tree in a List<object>using an in-order breadth first traversal.
+        /// </summary>
+        /// <returns>List<object> all values in tree using in order traversal</returns>
+        public List<object> ReadAll()
         {
             List<object> allValues = new List<object>();
             int current = Root;

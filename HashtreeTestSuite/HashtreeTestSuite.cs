@@ -122,6 +122,27 @@ namespace HashtreeProjectTestSuite
         }
 
         //Test Update
+        [Fact]
+        public void TestingUpdateOnOneNodeTree()
+        {
+            Hashtree hashtree = BuildTree(1);
+
+            Assert.Equal(1, hashtree.Read(1));
+            hashtree.Update(1,"Foo");
+            Assert.Equal("Foo",hashtree.Read(1));
+        }
+
+        [Fact]
+        public void TestingUpdateOnThreeNodeTree()
+        {
+            Hashtree hashtree = BuildTree(3);
+
+            Assert.Equal(2, hashtree.Read(2));
+            hashtree.Update(2, "Bar");
+            Assert.Equal("Bar", hashtree.Read(2));
+        }
         //Test Read
+
+
     }
 }
