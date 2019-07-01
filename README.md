@@ -79,11 +79,37 @@ Hashtree Class
     -Node current is then removed from Storage.
     -Node current.key is then removed from CanAdd.
     -Node currents relative nodes parent, left, and right are then retreived.
-    -
+    - #### Remove edge cases. Improves time optimization.
+    - If the current node is a left leaf
+      - Sets the parent.Left's value to 0 (null).
+    - If the current node is a right leaf
+      - Sets the parent.Right's value to 0 (null).
+    - If the current node has a left child but not a right child.
+      - If the parent.Left is equal to current.Key
+        - parent.Left = left.Key.
+      - else parent.Right = left.Key
+      - left.Parent then gets set to parent.Key.
+    - If the current node has a right child but not a left child.
+      - If the parent.Left is equal to current.Key
+        - parent.Left = right.Key.
+      - else parent.Right = right.Key
+      - right.Parent then gets set to parent.Key.
+    - #### Remove non-edge cases. (interior node is being deleted)
+    - If current's left and right nodes are both populated.
+      - The most recently created leaf is accessed from CanAdd using the CanAdd.GrabFront method. 
+      - The retreived node is then inserted into the deleted nodes position and its relative values (parent, left and right are updated between all nodes.)
+    - Size is reduced by 1.
+  - Read Method
+    - Input: Node's Key
+    - Output: Node's Value
+  - Update Method
+    
 
 
 
 ### Efficiency
+
+![Add-Remove Time Optimization](./assets/AddRemoveData.PNG)
 
 #### AddVertex Method
 ##### Time
