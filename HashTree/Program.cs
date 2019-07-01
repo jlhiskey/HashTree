@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using HashTree.Classes;
 
 namespace HashTree
@@ -7,14 +9,39 @@ namespace HashTree
     {
         static void Main(string[] args)
         {
+            Stopwatch stopwatch = new Stopwatch();
+            
             Hashtree test = new Hashtree();
-            test.Add(1);
-            test.Add(2);
-            test.Add(3);
-            test.Add(4);
-            test.Add(5);
-            test.Add(6);
-            test.Add(7);           
+
+            List<object> result;
+
+            int numNodesAdd = 50000000;
+            int numNodesRemove = numNodesAdd;
+            Console.WriteLine($"Adding {numNodesAdd} nodes.");
+            stopwatch.Start();
+            for (int i = 1; i <= numNodesAdd; i++)
+            {
+                test.Add(i);
+                
+            }
+            stopwatch.Stop();
+            Console.WriteLine($"Add Complete +{stopwatch.Elapsed}");
+            
+            stopwatch.Reset();
+            Console.WriteLine($"Removing {numNodesRemove} nodes.");
+            stopwatch.Start();
+            for (int i = numNodesRemove; i > 1; i--)
+            {
+                test.Remove(i);
+            }
+
+            result = test.ReadAll();
+
+            stopwatch.Stop();
+
+            result = test.ReadAll();
+
+            Console.WriteLine($"Remove Complete +{stopwatch.Elapsed}");        
         }
     }
 }
