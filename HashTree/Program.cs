@@ -15,8 +15,8 @@ namespace HashTree
 
             List<object> result;
 
-            int numNodesAdd = 10000000;
-            int numNodesRemove = 10000000;
+            int numNodesAdd = 50000000;
+            int numNodesRemove = numNodesAdd;
             Console.WriteLine($"Adding {numNodesAdd} nodes.");
             stopwatch.Start();
             for (int i = 1; i <= numNodesAdd; i++)

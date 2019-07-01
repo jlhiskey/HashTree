@@ -59,7 +59,7 @@ namespace HashTree.Classes
             // Calls the add helper method with the temp node as input.
             else
             {
-                AddHelper(temp, true);
+                AddHelper(temp);
             }
             // Increases the Size of the Hashtree
             Size = Size + 1;
@@ -71,7 +71,7 @@ namespace HashTree.Classes
         /// Accepts a node as input and inserts that node into the first avaliable nodes first avaliable child using left child as priority for insert.
         /// </summary>
         /// <param name="temp">Incoming node that will be inserted into tree.</param>
-        private void AddHelper(Node temp, bool isNewNode)
+        private void AddHelper(Node temp)
         {
             // Creates a landing point for the TryGetValue from storage.
             Node current;
@@ -84,28 +84,19 @@ namespace HashTree.Classes
                 current.Left = temp.Key;
                 // Sets the incoming nodes parent value to current.
                 temp.Parent = current.Key;
-
-                CanAdd.Enqueue(temp.Key);
-
-                // Adds the incoming node to storage.
-                if (!Storage.ContainsKey(temp.Key))
-                {
-                    Storage.Add(temp.Key, temp);
-                }
-                
             }
             // Adds temp node to current nodes right child.
             else
             {
                 current.Right = temp.Key;
-                temp.Parent = current.Key;
-                if (!Storage.ContainsKey(temp.Key))
-                {
-                    Storage.Add(temp.Key, temp);
-                }
-
-                CanAdd.Enqueue(temp.Key);
+                temp.Parent = current.Key;                
             }
+            // Adds the incoming node to storage.
+            if (!Storage.ContainsKey(temp.Key))
+            {
+                Storage.Add(temp.Key, temp);
+            }
+            CanAdd.Enqueue(temp.Key);
             // Checks to see if there is any storage space left in the node and dequeues if the nodes children are both occupied.
             if (current.Left != 0 && current.Right != 0)
             {
@@ -223,7 +214,6 @@ namespace HashTree.Classes
                 if (parent.Left == current.Key)
                 {
                     parent.Left = replacement.Key;
-                    
                 }
                 // Handles a node that is a right child of the parent.
                 else
@@ -236,6 +226,7 @@ namespace HashTree.Classes
                 left.Parent = replacement.Key;
                 right.Parent = replacement.Key;
             }
+
             Size--;
         }        
 
@@ -254,6 +245,7 @@ namespace HashTree.Classes
             {
                 return current.Value;
             }
+
             return null;
         }
 
@@ -301,6 +293,7 @@ namespace HashTree.Classes
                     queue.Enqueue(currentNode.Right);
                 }
             }
+
             return allValues;
         }
     }
